@@ -6,13 +6,13 @@ services:
     restart: always
     volumes:
       - "prom_data:/prometheus"
-      - "./prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
     ports:
       - "9090:9090"
     networks:
       - prom_net
     extra_hosts:
-      - "rpi-hosts:192.168.38.1"
+      - "rpi-host:192.168.38.1"
   node:
     image: quay.io/prometheus/node-exporter:v1.6.1
     command:
@@ -33,7 +33,7 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 192.168.39.0/24
+        - subnet: 192.168.38.0/24
           gateway: 192.168.38.1
 
     
