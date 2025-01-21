@@ -4,7 +4,7 @@ import (
 	"log/slog"
 	"time"
 
-	"machine"
+	"github.com/tinygo-org/tinygo/src/machine"
 )
 
 const (
