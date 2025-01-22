@@ -3,3 +3,4 @@ src
 tinygo
 tempmonitor/picoserver/main.uf2
 pkg
+.vscode
