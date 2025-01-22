@@ -1,3 +1,5 @@
 tempmonitor/cyw43439
 src
 tinygo
+tempmonitor/picoserver/main.uf2
+pkg
