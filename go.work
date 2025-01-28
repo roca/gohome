@@ -1,6 +1,7 @@
 go 1.23.4
 
 use (
+	./garagedoor/magnetic
 	./restapi
 	./tempmonitor/picoserver
 	./tempmonitor/picotempexport
