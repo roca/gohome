@@ -26,8 +26,8 @@ func (yh *yamlHour) UnmarshalYAML(v *yaml.Node) error {
 
 type config struct {
 	SwitchPinNumber int      `yaml:"switch_pin_number"`
-	NightStart      yamlHour `yaml:"night_start"`
-	NightEnd        yamlHour `yaml:"night_end"`
+	PeriodStart      yamlHour `yaml:"period_start"`
+	PeriodEnd yamlHour `yaml:"period_end"`
 }
 
 func newConfig(configFile string) (*config, error) {
@@ -48,17 +48,17 @@ func newConfig(configFile string) (*config, error) {
 		return nil, errors.New("switch pin needs to be defined")
 	}
 
-	if cfg.NightStart.t.IsZero() {
+	if cfg.PeriodStart.t.IsZero() {
 		var err error
-		cfg.NightStart.t, err = time.Parse("3:04pm", "9:00pm")
+		cfg.PeriodStart.t, err = time.Parse("3:04pm", "9:00pm")
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	if cfg.NightEnd.t.IsZero() {
+	if cfg.PeriodEnd.t.IsZero() {
 		var err error
-		cfg.NightEnd.t, err = time.Parse("3:04pm", "7:00am")
+		cfg.PeriodEnd.t, err = time.Parse("3:04pm", "7:00am")
 		if err != nil {
 			return nil, err
 		}
