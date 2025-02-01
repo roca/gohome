@@ -9,7 +9,7 @@ import (
 
 const pinNumber = 12
 
-type state rpio.state
+type state rpio.State
 
 func (s state) String() string {
 	if s == state(rpio.Low) {
