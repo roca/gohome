@@ -2,5 +2,6 @@ tempmonitor/cyw43439
 src
 tinygo
 tempmonitor/picoserver/main.uf2
+tempmonitor/picoserver/flash_nuke.uf2
 pkg
 .vscode

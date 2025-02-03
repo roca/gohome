@@ -147,13 +147,13 @@ func newMux(pin rpio.Pin) http.Handler {
 	mux.HandleFunc("GET /", func(w http.ResponseWriter, _ *http.Request) {
 		fmt.Fprintln(w, "Garage status API running...")
 	})
-	mux.HandleFunc("/door", doorStateHandler(pin))
+	mux.HandleFunc("GET /getdoor", doorStateHandler(pin))
 
 	return mux
 }
 
 func main() {
-	c := flag.String("c", "config.yaml", "Path to configuration file")
+	c := flag.String("c", "config.yml", "Path to configuration file")
 	flag.Parse()
 
 	cfg, err := newConfig(*c)
