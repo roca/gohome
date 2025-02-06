@@ -13,9 +13,9 @@ type state rpio.State
 
 func (s state) String() string {
 	if s == state(rpio.Low) {
-		return "Open"
+		return "closed"
 	}
-	return "Closed"
+	return "open"
 }
 
 func main() {

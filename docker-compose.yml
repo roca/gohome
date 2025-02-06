@@ -1,8 +1,7 @@
-version: '3'
 
 services:
   tinygo:
-    image: tinygo/tinygo:0.35.0
+    image: tinygo/tinygo:latest
     restart: always
     privileged: true
     volumes:
