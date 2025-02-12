@@ -4,7 +4,10 @@ services:
     image: tinygo/tinygo:latest
     restart: always
     privileged: true
+    user: root
     volumes:
       - "./:/usr/src/app"
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+      - "/media/romelcampbell/RP23501:/mnt/RPI-RP2"
     working_dir: /usr/src/app
     command: ["tail", "-f", "/dev/null"]
