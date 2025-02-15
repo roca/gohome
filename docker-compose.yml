@@ -7,7 +7,8 @@ services:
     user: root
     volumes:
       - "./:/usr/src/app"
+      - "/dev/ttyACM0:/dev/ttyACM0"
       - "/dev/ttyUSB0:/dev/ttyUSB0"
-      - "/media/romelcampbell/RP23501:/mnt/RPI-RP2"
+      - "/media/romelcampbell/RP23503:/mnt/RPI-RP2"
     working_dir: /usr/src/app
     command: ["tail", "-f", "/dev/null"]
