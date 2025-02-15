@@ -1,7 +1,6 @@
 tempmonitor/cyw43439
 src
-tinygo
-tempmonitor/picoserver/main.uf2
+tinygotempmonitor/picoserver/main.uf2
 tempmonitor/picoserver/flash_nuke.uf2
 tempmonitor/picoserver/RPI_PICO2-20241129-v1.24.1.uf2
 .vscode
