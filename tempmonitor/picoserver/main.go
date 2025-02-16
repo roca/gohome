@@ -5,7 +5,8 @@ import (
 	"encoding/json"
 	"io"
 	"machine"
-	"net/netip"
+	"net"
+	"strconv"
 	"time"
 
 	"log/slog"
@@ -137,7 +138,7 @@ func setupDevice() (*stacks.PortStack, *cyw43439.Device) {
 
 func newListener(stack *stacks.PortStack) *stacks.TCPListener {
 	// Start TCP server.
-	listenAddr := netip.AddrPortFrom(stack.Addr(), listenPort)
+	listenAddr := net.JoinHostPort(stack.Addr().String(), strconv.Itoa(listenPort))
 	listener, err := stacks.NewTCPListener(
 		stack, stacks.TCPListenerConfig{
 			MaxConnections: maxconns,
