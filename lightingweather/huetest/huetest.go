@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"os"
 
 	hue "github.com/collinux/gohue"
@@ -14,6 +16,9 @@ func main() {
 
 	bridge.Login(HUE_ID)
 
-	deskLight, _ := bridge.GetLightByName("Desk")
-	deskLight.On()
+	lightStrip, err := bridge.GetLightByName("Hue lightstrip plus 1")
+	if err != nil {
+		log.Fatal(err)
+	}
+	lightStrip.Toggle()
 }
