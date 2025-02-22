@@ -8,5 +8,5 @@ use (
 	./restapi
 	./tempmonitor/picoserver
 	./tempmonitor/picotempexport
-	./tinygo/goroot-92b288e3db2b01fe80ab866a79f8f1988d04a4df78cc2b5fd873e025f498bcdc/src
+	// ./tinygo/goroot-92b288e3db2b01fe80ab866a79f8f1988d04a4df78cc2b5fd873e025f498bcdc/src
 )
