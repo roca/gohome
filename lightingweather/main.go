@@ -103,7 +103,7 @@ func getCurrentTemperature(cfg *config) (int, error) {
 	return int(math.Round(w.Main.Temp)), err
 }
 
-func setLight( cfg *config, currentTemp int) error {
+func setLight(cfg *config, currentTemp int) error {
 	bridge, err := hue.NewBridge(cfg.HueIPAddress)
 	if err != nil {
 		return err
@@ -114,6 +114,15 @@ func setLight( cfg *config, currentTemp int) error {
 		return err
 	}
 
+	weatherLight, err := bridge.GetLightByName(cfg.LightName)
+	if err != nil {
+		return err
+	}
+
+	if err := weatherLight.SetColor(
+		pickColor(cfg, currentTemp)); err != nil {
+		return err
+	}
+
 	return nil
 }
-
