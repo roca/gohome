@@ -39,8 +39,8 @@ type config struct {
 	LightName    string  `yaml:"light_name"`
 	MaxColor     string  `yaml:"max_color"`
 	Colors       []color `yaml:"colors"`
-	ZipCode     string  `yaml:"zipcode"`
-	Country     string  `yaml:"country"`
+	ZipCode      string  `yaml:"zipcode"`
+	Country      string  `yaml:"country"`
 }
 
 func (cfg *config) sortColorRange() *config {
@@ -99,4 +99,13 @@ func pickColor(cfg *config, curtTemp int) *[2]float32 {
 		}
 	}
 	return colorTranslate[cfg.MaxColor]
+}
+
+func returnColor(cfg *config, curtTemp int) string {
+	for _, cl := range cfg.Colors {
+		if curtTemp < cl.Threshold {
+			return cl.Color
+		}
+	}
+	return cfg.MaxColor
 }
