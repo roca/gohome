@@ -25,7 +25,7 @@ func lightweather(cfg *config, chRefresh <-chan struct{}) {
 	})
 
 	run := func() {
-		log.Println("INFO: Gettinmg current temperature")
+		log.Println("INFO: Getting current temperature")
 		currentTemp, err := getCurrentTemperature(cfg)
 		if err != nil {
 			log.Println("ERROR:", err)
