@@ -100,7 +100,8 @@ func getCurrentTemperature(cfg *config) (int, error) {
 		return 0, err
 	}
 
-	err = w.CurrentByName(cfg.Location)
+	//err = w.CurrentByName(cfg.Location)
+	err = w.CurrentByZipcode(cfg.ZipCode, cfg.Country)
 	return int(math.Round(w.Main.Temp)), err
 }
 

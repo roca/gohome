@@ -6,6 +6,8 @@ hue_id: "1"
 hue_ip_address: "192.168.0.33"
 owm_api_key: "123"
 light_name: "Desk"
+zipcode: "10001"
+country: "US"
 
 max_color: "red"
 

@@ -39,6 +39,8 @@ type config struct {
 	LightName    string  `yaml:"light_name"`
 	MaxColor     string  `yaml:"max_color"`
 	Colors       []color `yaml:"colors"`
+	ZipCode     string  `yaml:"zipcode"`
+	Country     string  `yaml:"country"`
 }
 
 func (cfg *config) sortColorRange() *config {
@@ -66,7 +68,7 @@ func newConfig(configFile string) (*config, error) {
 		}
 	}
 
-	// AllLow user to override OWM API Key , Hue ID and Hue IP address with env vars
+	// AllLow user to override OWM API Key, Hue ID, Hue IP address, zipcode and country with env vars
 	if owmKey, ok := os.LookupEnv("OWM_API_KEY"); ok {
 		cfg.OWMAPIKey = owmKey
 	}
@@ -77,6 +79,14 @@ func newConfig(configFile string) (*config, error) {
 
 	if hueIP, ok := os.LookupEnv("HUE_IP_ADDRESS"); ok {
 		cfg.HueIPAddress = hueIP
+	}
+
+	if zipCode, ok := os.LookupEnv("ZIPCODE"); ok {
+		cfg.ZipCode = zipCode
+	}
+
+	if country, ok := os.LookupEnv("COUNTRY"); ok {
+		cfg.Country = country
 	}
 
 	return cfg.sortColorRange(), nil
