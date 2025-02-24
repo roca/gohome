@@ -1,0 +1,5 @@
+---
+- labels:
+    job: lightweather
+  targets:
+    - 'lightweather:3040'
