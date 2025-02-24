@@ -33,12 +33,12 @@ func lightweather(cfg *config, chRefresh <-chan struct{}) {
 
 		externalWeatherTemp.Set(float64(currentTemp))
 
-		// log.Println("INFO: Setting light")
-		// if err := setLight(cfg, currentTemp); err != nil {
-		// 	log.Println("ERROR:", err)
-		// }
+		log.Println("INFO: Setting light")
+		if err := setLight(cfg, currentTemp); err != nil {
+			log.Println("ERROR:", err)
+		}
 
-		log.Println("INFO: Setting light to ", returnColor(cfg, currentTemp))
+		// log.Println("INFO: Setting light to ", returnColor(cfg, currentTemp))
 
 	}
 
