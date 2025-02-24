@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "embed"
 	"flag"
 	"log"
 	"math"
@@ -94,7 +95,7 @@ func main() {
 }
 
 func getCurrentTemperature(cfg *config) (int, error) {
-	w, err := owm.NewCurrent(cfg.Unit, cfg.Lang, cfg.OWMAPIKEY)
+	w, err := owm.NewCurrent(cfg.Unit, cfg.Lang, cfg.OWMAPIKey)
 	if err != nil {
 		return 0, err
 	}

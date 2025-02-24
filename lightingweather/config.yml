@@ -1,0 +1,20 @@
+---
+unit: "C"
+lang: "EN"
+location: "New York, US"
+hue_id: "1"
+hue_ip_address: "192.168.0.33"
+owm_api_key: "123"
+light_name: "Desk"
+
+max_color: "red"
+
+colors:
+  - color: orange
+    threshold: 30
+  - color: green
+    threshold: 20
+  - color: yellow
+    threshold: 25
+  - color: blue
+    threshold: 5
