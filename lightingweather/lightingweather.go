@@ -62,6 +62,10 @@ func newMux(cfg *config) http.Handler {
 
 	chRefresh := make(chan struct{}, 2)
 
+	go lightweather(cfg, chRefresh)
+
+	chRefresh <- struct{}{}
+
 	mux.HandleFunc("POST /refresh", func(w http.ResponseWriter, _ *http.Request) {
 		log.Println("INFO: Received refresh request")
 
