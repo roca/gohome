@@ -1,6 +1,12 @@
-#  Light Weather App
+# Light Weather App
 
-## Docker Run:
+## Docker build
+
+```sh
+docker build -t lightweather:v1 .
+```
+
+## Docker Run
 
 ```sh
 docker run -d \
