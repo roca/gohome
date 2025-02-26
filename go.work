@@ -4,7 +4,7 @@ use (
 	./examples
 	./garagedoor/final
 	./garagedoor/magnetic
-	./lightingweather
+	./lightweather
 	./restapi
 	./tempmonitor/picoserver
 	./tempmonitor/picotempexport

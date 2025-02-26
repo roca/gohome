@@ -84,6 +84,12 @@ func main() {
 	flag.Parse()
 
 	cfg, err := newConfig(*c)
+	defer func() {
+		if err := turnLightOff(cfg); err != nil {
+			log.Println("ERROR:", err)
+		}
+	}()
+	
 	if err != nil {
 		log.Fatalln("ERROR:", err)
 	}
@@ -129,6 +135,28 @@ func setLight(cfg *config, currentTemp int) error {
 
 	if err := weatherLight.SetColor(
 		pickColor(cfg, currentTemp)); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func turnLightOff(cfg *config) error {
+	bridge, err := hue.NewBridge(cfg.HueIPAddress)
+	if err != nil {
+		return err
+	}
+
+	if err := bridge.Login(cfg.HueID); err != nil {
+		return err
+	}
+
+	weatherLight, err := bridge.GetLightByName(cfg.LightName)
+	if err != nil {
+		return err
+	}
+
+	if err := weatherLight.Off(); err != nil {
 		return err
 	}
 
