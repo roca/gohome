@@ -34,7 +34,6 @@ type temp struct {
 var logger *slog.Logger
 
 func init() {
-	machine.
 	logger = slog.New(
 		slog.NewTextHandler(machine.Serial, &slog.HandlerOptions{
 			Level: slog.LevelInfo,
