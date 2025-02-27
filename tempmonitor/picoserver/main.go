@@ -153,7 +153,7 @@ func newListener(stack *stacks.PortStack) *stacks.TCPListener {
 	}
 
 	logger.Info("listening",
-		slog.String("addr", "http://"+listenAddr),
+		slog.String("addr", "http://"+listenAddr.String()),
 	)
 
 	return listener
