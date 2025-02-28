@@ -1,0 +1,34 @@
+time=1970-01-01T00:26:32.448Z level=INFO msg=GPIOSet wlGPIO=0 value=true
+time=1970-01-01T00:26:44.510Z level=INFO msg=TCP:rx-statechange port=80 old=Listen new=SynRcvd rxflags=[SYN]
+time=1970-01-01T00:26:44.572Z level=INFO msg=TCP:rx-statechange port=80 old=SynRcvd new=Established rxflags=[ACK]
+time=1970-01-01T00:26:44.573Z level=INFO msg="new connection" remote=192.168.68.114:36620
+time=1970-01-01T00:26:44.592Z level=INFO msg="Got temperature request..."
+time=1970-01-01T00:26:44.600Z level=INFO msg=GPIOSet wlGPIO=0 value=false
+time=1970-01-01T00:26:44.635Z level=INFO msg=TCP:tx-statechange port=80 old=Established new=FinWait1 txflags=[FIN,ACK]
+time=1970-01-01T00:26:44.699Z level=INFO msg=TCP:rx-statechange port=80 old=FinWait1 new=FinWait2 rxflags=[ACK]
+time=1970-01-01T00:26:44.712Z level=ERROR msg=tcb:rcv.reject err="reject in/out seg: seq != rcv.nxt (require sequential segments)"
+time=1970-01-01T00:26:45.118Z level=INFO msg=GPIOSet wlGPIO=0 value=true
+time=1970-01-01T00:26:45.126Z level=INFO msg=TCP:rx-statechange port=80 old=FinWait2 new=TimeWait rxflags=[FIN,ACK]
+time=1970-01-01T00:26:45.147Z level=INFO msg=lst:freeConnForReuse lport=80 rport=36620
+time=1970-01-01T00:26:45.646Z level=INFO msg=GPIOSet wlGPIO=0 value=false
+time=1970-01-01T00:26:46.163Z level=INFO msg=GPIOSet wlGPIO=0 value=true
+time=1970-01-01T00:26:46.680Z level=INFO msg=GPIOSet wlGPIO=0 value=false
+time=1970-01-01T00:26:47.197Z level=INFO msg=GPIOSet wlGPIO=0 value=true
+time=1970-01-01T00:26:50.530Z level=ERROR msg=tryPoll:rx plen=0 err="packet too small"
+poll error: packet too small
+time=1970-01-01T00:26:59.519Z level=INFO msg=TCP:rx-statechange port=80 old=Listen new=SynRcvd rxflags=[SYN]
+time=1970-01-01T00:27:14.580Z level=ERROR msg=Stack.RecvEth err="dropped packet"
+time=1970-01-01T00:27:14.588Z level=ERROR msg=tryPoll:rx plen=0 err="dropped packet"
+poll error: dropped packet
+time=1970-01-01T00:27:15.517Z level=ERROR msg=Stack.RecvEth err="dropped packet"
+time=1970-01-01T00:27:15.525Z level=ERROR msg=tryPoll:rx plen=0 err="dropped packet"
+poll error: dropped packet
+time=1970-01-01T00:27:16.504Z level=ERROR msg=Stack.RecvEth err="dropped packet"
+time=1970-01-01T00:27:16.512Z level=ERROR msg=tryPoll:rx plen=0 err="dropped packet"
+poll error: dropped packet
+time=1970-01-01T00:27:17.645Z level=ERROR msg=Stack.RecvEth err="dropped packet"
+time=1970-01-01T00:27:17.653Z level=ERROR msg=tryPoll:rx plen=0 err="dropped packet"
+poll error: dropped packet
+time=1970-01-01T00:27:18.581Z level=ERROR msg=Stack.RecvEth err="dropped packet"
+time=1970-01-01T00:27:18.589Z level=ERROR msg=tryPoll:rx plen=0 err="dropped packet"
+poll error: dropped packet

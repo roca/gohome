@@ -74,7 +74,7 @@ func (m *metrics) getMetrics(client *http.Client, url string) *metrics {
 		m.results.TempF = 0
 	}
 
-	m.expire = time.Now().Add(2 * time.Second)
+	m.expire = time.Now().Add(5 * time.Second)
 
 	return m
 }
