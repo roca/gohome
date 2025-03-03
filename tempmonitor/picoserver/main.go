@@ -20,7 +20,7 @@ import (
 const (
 	connTimeout = 3 * time.Second
 	maxconns    = 3
-	tcpbufsize  = 2030
+	tcpbufsize  = 2048
 	hostname    = "picotemp"
 	listenPort  = 80
 )

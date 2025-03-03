@@ -13,9 +13,9 @@ import (
 func main() {
 	slackToken := os.Getenv("SLACK_TOKEN")
 	channelID := os.Getenv("CHANNEL_ID")
-	imagePath := "path/to/your/image.png"
+	imagePath := "./sworks.jpeg"
 
-	err := postImageToSlack(slackToken, channelID, imagePath)
+	err := postImageToSlack(slackToken+"x", channelID, imagePath)
 	if err != nil {
 		fmt.Println("Error posting image:", err)
 		return
