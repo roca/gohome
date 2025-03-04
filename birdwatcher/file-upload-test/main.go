@@ -20,8 +20,7 @@ func main() {
 	fileSize := fileInfo.Size()
 
 	params := slack.UploadFileV2Parameters{
-		// Channel: os.Getenv("CHANNEL_ID"),
-		// Channel: "general",
+		Channel: os.Getenv("CHANNEL_ID"),
 		File:     imagePath,
 		Title:    "Sworks",
 		Filename: "sworks.jpeg",
