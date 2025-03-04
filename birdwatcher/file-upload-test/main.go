@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/slack-go/slack"
 )
@@ -16,15 +17,18 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	fileInfo, _ := file.Stat()
-	fileSize := fileInfo.Size()
+
+	fileInfo, err := file.Stat()
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	params := slack.UploadFileV2Parameters{
-		Channel: os.Getenv("CHANNEL_ID"),
+		Channel:  os.Getenv("CHANNEL_ID"),
 		File:     imagePath,
-		Title:    "Sworks",
-		Filename: "sworks.jpeg",
-		FileSize: int(fileSize),
+		Title:    filepath.Base(imagePath),
+		Filename: fileInfo.Name(),
+		FileSize: int(fileInfo.Size()),
 	}
 
 	uploadedFileInfo, err := api.UploadFileV2(params)
