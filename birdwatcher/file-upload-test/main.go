@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -10,10 +11,15 @@ import (
 )
 
 func main() {
+	imagePath :=flag.String("imagePath", "", "Path to the image file to upload")
+	flag.Parse()
 	api := slack.New(os.Getenv("SLACK_BOT_TOKEN"))
-	imagePath := "./sworks.jpeg"
+	
+	if imagePath == nil || *imagePath == "" {
+		log.Fatalln("Please provide the path to the image file to upload")
+	}
 
-	file, err := os.Open(imagePath)
+	file, err := os.Open(*imagePath)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -25,8 +31,8 @@ func main() {
 
 	params := slack.UploadFileV2Parameters{
 		Channel:  os.Getenv("CHANNEL_ID"),
-		File:     imagePath,
-		Title:    filepath.Base(imagePath),
+		File:     *imagePath,
+		Title:    filepath.Base(*imagePath),
 		Filename: fileInfo.Name(),
 		FileSize: int(fileInfo.Size()),
 	}
