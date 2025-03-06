@@ -11,17 +11,26 @@ import (
 	"github.com/stianeikeland/go-rpio/v4"
 )
 
-func main() {
+var api *slack.Client
+var slackBotToken string
+var channelID string
+
+func init() {
 	slackBotToken, ok := os.LookupEnv("SLACK_BOT_TOKEN")
 	if !ok {
 		fmt.Fprintln(os.Stderr, "'SLACK_BOT_TOKEN' env var is required")
 		os.Exit(1)
 	}
-	channelID, ok := os.LookupEnv("CHANNEL_ID")
+	channelID, ok = os.LookupEnv("CHANNEL_ID")
 	if !ok {
 		fmt.Fprintln(os.Stderr, "'CHANNEL_ID' env var is required")
 		os.Exit(1)
 	}
+
+	api = slack.New(slackBotToken)
+}
+
+func main() {
 
 	pin := rpio.Pin(18)
 
@@ -50,12 +59,12 @@ func main() {
 			motionDetected = true
 			fmt.Println("Motion Detected!")
 
-			go captureSendImage(slackBotToken, channelID)
+			go captureSendImage()
 		}
 	}
 }
 
-func captureSendImage(slackBotToken, channelID string) {
+func captureSendImage() {
 	capturedImage, err := captureImage()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Failed to capture image:", err)
@@ -99,14 +108,12 @@ func sendImage(imagePath, slackBotToken, channelID string) error {
 	}
 
 	params := slack.UploadFileV2Parameters{
-		Channel:  os.Getenv("CHANNEL_ID"),
+		Channel:  channelID,
 		File:     imagePath,
 		Title:    filepath.Base(imagePath),
 		Filename: fileInfo.Name(),
 		FileSize: int(fileInfo.Size()),
 	}
-
-	api := slack.New(slackBotToken)
 
 	_, err = api.UploadFileV2(params)
 	if err != nil {
