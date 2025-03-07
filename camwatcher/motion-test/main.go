@@ -26,7 +26,7 @@ func main() {
 
 	pin.Input()
 	pin.PullUp()
-	pin.Detect(rpio.RiseEdge)
+	pin.Detect(rpio.FallEdge)
 
 	fmt.Println("Sensing Enabled.")
 
