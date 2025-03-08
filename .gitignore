@@ -6,3 +6,4 @@ tempmonitor/picoserver/RPI_PICO2-20241129-v1.24.1.uf2
 .vscode
 pkg
 bin
+secret.txt
