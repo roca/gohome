@@ -87,7 +87,7 @@ func captureImage() (string, error) {
 	}
 	output.Close()
 
-	cmd := exec.Command("rpicam-still", "--width", "1024", "--height", "768", "-o", output.Name())
+	cmd := exec.Command("libcamera-still", "--width", "1024", "--height", "768", "-o", output.Name())
 	if err := cmd.Run(); err != nil {
 		return "", fmt.Errorf("failed to capture image: %w", err)
 	}
