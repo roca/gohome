@@ -4,14 +4,66 @@
 
 [link](github.com/tinygo-org/tinygo/src/machine)
 
+## Temperature Monitor
 
-## CamWatcher
+## Garage Door
+
+## Light Weather
+
+```sh
+bash
+export ZIPCODE
+export COUNTRY_CODE
+export OWM_API_KEY
+export HUE_ID
+export HUE_IP_ADDRESS
+```
+
+## Light Weather App
+
+### Docker build
+
+```sh
+docker build -t lightweather:v1 .
+```
+
+### Docker Run
+
+```sh
+docker run -d \
+--name lightweather \
+--restart=always \
+-p 3040:3040 \
+-e  ZIPCODE=${ZIPCODE} \
+-e COUNTRY_CODE=${COUNTRY_CODE} \
+-e OWM_API_KEY=${OWM_API_KEY} \
+-e HUE_ID=${HUE_ID} \
+-e HUE_IP_ADDRESS=${HUE_IP_ADDRESS} \
+--net=prometheus_prom_net \
+lightweather:v1 \
+-c /etc/config.yml
+```
+
+## Cam Watcher
+
+```sh
+export SLACK_BOT_TOKEN=
+export SLACK_WEBHOOK_URL
+export CHANNEL_ID
+export CHANNEL_NAME
+```
 
 This works best with the 'PI Zero 2 w' the  'PI Zero w' has bad performance issues
 
-```bash
-docker build -t camwatcher:v1 .
+### Docker build
 
+```sh
+docker build -t camwatcher:v1 .
+```
+
+### Docker run
+
+```sh
 docker run -d \
 -v /run/udev/:/run/udev:ro \
 -v /dev/video0:/dev/video0 \
