@@ -87,7 +87,11 @@ func handleConnection(listener *stacks.TCPListener, blink chan uint) {
 		buf.Reset(conn)
 		resp.Reset()
 		HTTPHandler(conn, &resp)
-		conn.Close()
+		err = conn.Close()
+		if err != nil {
+			logger.Error("conn close:", slog.String("err", err.Error()))
+		}
+		time.Sleep(1000 * time.Millisecond)
 
 		blink <- 5
 	}
