@@ -10,6 +10,11 @@
 
 ## Temperature Monitor
 
+```sh
+tinygo build -target=pico-w -opt=1 -stack-size=8kb -size=short -serial=uart -o main02.uf2 main.go
+```
+
+
 ## Garage Door
 
 ## Light Weather

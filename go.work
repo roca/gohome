@@ -7,8 +7,8 @@ use (
 	./lightweather
 	./restapi
 	./tempmonitor/picotempexport
-	// ./tempmonitor/picoserver
-	// ./tempmonitor/examples
-	// ./tempmonitor/cyw43439
-        // ./tinygo/goroot-92b288e3db2b01fe80ab866a79f8f1988d04a4df78cc2b5fd873e025f498bcdc/src
+	./tempmonitor/picoserver
+	./tempmonitor/examples
+	./tempmonitor/cyw43439
+        ./tinygo/goroot-92b288e3db2b01fe80ab866a79f8f1988d04a4df78cc2b5fd873e025f498bcdc/src
 )
