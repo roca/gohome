@@ -41,11 +41,11 @@ func init() {
 
 func main() {
 	stack, dev := setupDevice()
-	listener := newListener(stack)
+	conn := newConn(stack)
 
 	blink := make(chan uint, 3)
 	go blinkLED(dev, blink)
-	go handleConnection(listener, blink)
+	go handleConnection(conn, blink)
 
 	for {
 		select {
@@ -54,28 +54,28 @@ func main() {
 		}
 	}
 }
-func handleConnection(listener *stacks.TCPListener, blink chan uint) {
+func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 	// Reuse the same buffers for each
 	// connection to avoid heap allocations.
 	var resp httpx.ResponseHeader
 	buf := bufio.NewReaderSize(nil, 1024)
 
 	for {
-		conn, err := listener.Accept()
-		if err != nil {
-			logger.Error(
-				"listener accept:",
-				slog.String("err", err.Error()),
-			)
-			time.Sleep(time.Second)
-			continue
-		}
+		// conn, err := listener.Accept()
+		// if err != nil {
+		// 	logger.Error(
+		// 		"listener accept:",
+		// 		slog.String("err", err.Error()),
+		// 	)
+		// 	time.Sleep(time.Second)
+		// 	continue
+		// }
 		logger.Info(
 			"new connection",
 			slog.String("remote",
 				conn.RemoteAddr().String()),
 		)
-		err = conn.SetDeadline(time.Now().Add(connTimeout))
+		err := conn.SetDeadline(time.Now().Add(connTimeout))
 		if err != nil {
 			conn.Close()
 			logger.Error(
@@ -161,6 +161,39 @@ func newListener(stack *stacks.PortStack) *stacks.TCPListener {
 	)
 
 	return listener
+}
+
+func newConn(stack *stacks.PortStack) *stacks.TCPConn {
+	// Start TCP server.
+	//listenAddr := netip.AddrPortFrom(stack.Addr(), listenPort)
+	conn, err := stacks.NewTCPConn(stack, stacks.TCPConnConfig{
+		TxBufSize: maxconns,
+		RxBufSize: tcpbufsize,
+	})
+	if err != nil {
+		panic("TCPConn create:" + err.Error())
+	}
+
+	// listener, err := stacks.NewTCPListener(
+	// 	stack, stacks.TCPListenerConfig{
+	// 		MaxConnections: maxconns,
+	// 		ConnTxBufSize:  tcpbufsize,
+	// 		ConnRxBufSize:  tcpbufsize,
+	// 	})
+	
+	// if err != nil {
+	// 	panic("listener create:" + err.Error())
+	// }
+	// err = listener.StartListening(listenPort)
+	// if err != nil {
+	// 	panic("listener start:" + err.Error())
+	// }
+
+	// logger.Info("listening",
+	// 	slog.String("addr", "http://"+listenAddr.String()),
+	// )
+
+	return conn
 }
 
 func getTemperature() *temp {
