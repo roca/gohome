@@ -165,7 +165,7 @@ func newListener(stack *stacks.PortStack) *stacks.TCPListener {
 
 func newConn(stack *stacks.PortStack) *stacks.TCPConn {
 	// Start TCP server.
-	//listenAddr := netip.AddrPortFrom(stack.Addr(), listenPort)
+	listenAddr := netip.AddrPortFrom(stack.Addr(), listenPort)
 	conn, err := stacks.NewTCPConn(stack, stacks.TCPConnConfig{
 		TxBufSize: maxconns,
 		RxBufSize: tcpbufsize,
