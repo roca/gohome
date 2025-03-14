@@ -174,24 +174,24 @@ func newConn(stack *stacks.PortStack) *stacks.TCPConn {
 		panic("TCPConn create:" + err.Error())
 	}
 
-	// listener, err := stacks.NewTCPListener(
-	// 	stack, stacks.TCPListenerConfig{
-	// 		MaxConnections: maxconns,
-	// 		ConnTxBufSize:  tcpbufsize,
-	// 		ConnRxBufSize:  tcpbufsize,
-	// 	})
+	listener, err := stacks.NewTCPListener(
+		stack, stacks.TCPListenerConfig{
+			MaxConnections: maxconns,
+			ConnTxBufSize:  tcpbufsize,
+			ConnRxBufSize:  tcpbufsize,
+		})
 	
-	// if err != nil {
-	// 	panic("listener create:" + err.Error())
-	// }
-	// err = listener.StartListening(listenPort)
-	// if err != nil {
-	// 	panic("listener start:" + err.Error())
-	// }
+	if err != nil {
+		panic("listener create:" + err.Error())
+	}
+	err = listener.StartListening(listenPort)
+	if err != nil {
+		panic("listener start:" + err.Error())
+	}
 
-	// logger.Info("listening",
-	// 	slog.String("addr", "http://"+listenAddr.String()),
-	// )
+	logger.Info("listening",
+		slog.String("addr", "http://"+listenAddr.String()),
+	)
 
 	return conn
 }
