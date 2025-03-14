@@ -70,12 +70,23 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 		// 	time.Sleep(time.Second)
 		// 	continue
 		// }
+		const newISS = 1337
+		err := conn.OpenListenTCP(listenPort, newISS+100)
+		if err != nil {
+			logger.Error(
+				"conn open listen:",
+				slog.String("err", err.Error()),
+			)
+			time.Sleep(time.Second)
+			continue
+		}
+
 		logger.Info(
 			"new connection",
 			slog.String("remote",
 				conn.RemoteAddr().String()),
 		)
-		err := conn.SetDeadline(time.Now().Add(connTimeout))
+		err = conn.SetDeadline(time.Now().Add(connTimeout))
 		if err != nil {
 			conn.Close()
 			logger.Error(
@@ -165,7 +176,7 @@ func newListener(stack *stacks.PortStack) *stacks.TCPListener {
 
 func newConn(stack *stacks.PortStack) *stacks.TCPConn {
 	// Start TCP server.
-	listenAddr := netip.AddrPortFrom(stack.Addr(), listenPort)
+	// listenAddr := netip.AddrPortFrom(stack.Addr(), listenPort)
 	conn, err := stacks.NewTCPConn(stack, stacks.TCPConnConfig{
 		TxBufSize: maxconns,
 		RxBufSize: tcpbufsize,
@@ -174,24 +185,24 @@ func newConn(stack *stacks.PortStack) *stacks.TCPConn {
 		panic("TCPConn create:" + err.Error())
 	}
 
-	listener, err := stacks.NewTCPListener(
-		stack, stacks.TCPListenerConfig{
-			MaxConnections: maxconns,
-			ConnTxBufSize:  tcpbufsize,
-			ConnRxBufSize:  tcpbufsize,
-		})
+	// listener, err := stacks.NewTCPListener(
+	// 	stack, stacks.TCPListenerConfig{
+	// 		MaxConnections: maxconns,
+	// 		ConnTxBufSize:  tcpbufsize,
+	// 		ConnRxBufSize:  tcpbufsize,
+	// 	})
 	
-	if err != nil {
-		panic("listener create:" + err.Error())
-	}
-	err = listener.StartListening(listenPort)
-	if err != nil {
-		panic("listener start:" + err.Error())
-	}
+	// if err != nil {
+	// 	panic("listener create:" + err.Error())
+	// }
+	// err = listener.StartListening(listenPort)
+	// if err != nil {
+	// 	panic("listener start:" + err.Error())
+	// }
 
-	logger.Info("listening",
-		slog.String("addr", "http://"+listenAddr.String()),
-	)
+	// logger.Info("listening",
+	// 	slog.String("addr", "http://"+listenAddr.String()),
+	// )
 
 	return conn
 }
