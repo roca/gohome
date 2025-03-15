@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io"
 	"machine"
+	"math/rand"
 	"net/netip"
 	"time"
 
@@ -12,6 +13,7 @@ import (
 
 	"github.com/soypat/cyw43439"
 	"github.com/soypat/cyw43439/examples/common"
+	"github.com/soypat/seqs"
 
 	"github.com/soypat/seqs/httpx"
 	"github.com/soypat/seqs/stacks"
@@ -73,8 +75,8 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 
 		const newISS = 1337
 		const newPortoffset = 1
-		
-		err := conn.OpenListenTCP(uint16(listenPort), newISS+100)
+
+		err := conn.OpenListenTCP(uint16(listenPort), seqs.Value(rand.Uint32()))
 		if err != nil {
 			logger.Error(
 				"conn open listen:",
@@ -83,7 +85,6 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 			time.Sleep(time.Second)
 			continue
 		}
-
 
 		logger.Info(
 			"new connection",
@@ -188,27 +189,6 @@ func newConn(stack *stacks.PortStack) *stacks.TCPConn {
 	if err != nil {
 		panic("TCPConn create:" + err.Error())
 	}
-
-	// listener, err := stacks.NewTCPListener(
-	// 	stack, stacks.TCPListenerConfig{
-	// 		MaxConnections: maxconns,
-	// 		ConnTxBufSize:  tcpbufsize,
-	// 		ConnRxBufSize:  tcpbufsize,
-	// 	})
-	
-	// if err != nil {
-	// 	panic("listener create:" + err.Error())
-	// }
-	// err = listener.StartListening(listenPort)
-	// if err != nil {
-	// 	panic("listener start:" + err.Error())
-	// }
-
-	// logger.Info("listening",
-	// 	slog.String("addr", "http://"+listenAddr.String()),
-	// )
-
-
 
 	logger.Info("listening",
 		slog.String("addr", "http://"+listenAddr.String()),
