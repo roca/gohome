@@ -60,6 +60,15 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 	var resp httpx.ResponseHeader
 	buf := bufio.NewReaderSize(nil, 1024)
 
+	const newISS = 1337
+	err := conn.OpenListenTCP(uint16(listenPort), newISS+100)
+	if err != nil {
+		logger.Error(
+			"conn open listen:",
+			slog.String("err", err.Error()),
+		)
+	}
+
 	for {
 		// conn, err := listener.Accept()
 		// if err != nil {
@@ -70,16 +79,7 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 		// 	time.Sleep(time.Second)
 		// 	continue
 		// }
-		const newISS = 1337
-		err := conn.OpenListenTCP(listenPort, newISS+100)
-		if err != nil {
-			logger.Error(
-				"conn open listen:",
-				slog.String("err", err.Error()),
-			)
-			time.Sleep(time.Second)
-			continue
-		}
+
 
 		logger.Info(
 			"new connection",
