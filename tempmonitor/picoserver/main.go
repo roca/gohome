@@ -41,11 +41,11 @@ func init() {
 
 func main() {
 	stack, dev := setupDevice()
-	conn := newConn(stack)
+	listener := newListener(stack)
 
 	blink := make(chan uint, 3)
 	go blinkLED(dev, blink)
-	go handleConnection(conn, blink)
+	go handleConnection(listener, blink)
 
 	for {
 		select {
@@ -54,36 +54,22 @@ func main() {
 		}
 	}
 }
-func handleConnection(conn *stacks.TCPConn, blink chan uint) {
+func handleConnection(listener *stacks.TCPListener, blink chan uint) {
 	// Reuse the same buffers for each
 	// connection to avoid heap allocations.
 	var resp httpx.ResponseHeader
 	buf := bufio.NewReaderSize(nil, 1024)
 
 	for {
-		// conn, err := listener.Accept()
-		// if err != nil {
-		// 	logger.Error(
-		// 		"listener accept:",
-		// 		slog.String("err", err.Error()),
-		// 	)
-		// 	time.Sleep(time.Second)
-		// 	continue
-		// }
-
-		const newISS = 1337
-		const newPortoffset = 1
-		
-		err := conn.OpenListenTCP(uint16(listenPort), newISS+100)
+		conn, err := listener.Accept()
 		if err != nil {
 			logger.Error(
-				"conn open listen:",
+				"listener accept:",
 				slog.String("err", err.Error()),
 			)
 			time.Sleep(time.Second)
 			continue
 		}
-
 
 		logger.Info(
 			"new connection",
@@ -195,7 +181,7 @@ func newConn(stack *stacks.PortStack) *stacks.TCPConn {
 	// 		ConnTxBufSize:  tcpbufsize,
 	// 		ConnRxBufSize:  tcpbufsize,
 	// 	})
-	
+
 	// if err != nil {
 	// 	panic("listener create:" + err.Error())
 	// }
@@ -207,8 +193,6 @@ func newConn(stack *stacks.PortStack) *stacks.TCPConn {
 	// logger.Info("listening",
 	// 	slog.String("addr", "http://"+listenAddr.String()),
 	// )
-
-
 
 	logger.Info("listening",
 		slog.String("addr", "http://"+listenAddr.String()),
