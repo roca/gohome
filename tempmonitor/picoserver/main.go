@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"io"
 	"machine"
-	"math/rand"
 	"net/netip"
 	"time"
 
@@ -13,7 +12,6 @@ import (
 
 	"github.com/soypat/cyw43439"
 	"github.com/soypat/cyw43439/examples/common"
-	"github.com/soypat/seqs"
 
 	"github.com/soypat/seqs/httpx"
 	"github.com/soypat/seqs/stacks"
@@ -73,25 +71,12 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 		// 	continue
 		// }
 
-		const newISS = 1337
-		const newPortoffset = 1
-
-		err := conn.OpenListenTCP(uint16(listenPort), seqs.Value(rand.Uint32()))
-		if err != nil {
-			logger.Error(
-				"conn open listen:",
-				slog.String("err", err.Error()),
-			)
-			time.Sleep(time.Second)
-			continue
-		}
-
-		logger.Info(
-			"new connection",
-			slog.String("remote",
-				conn.RemoteAddr().String()),
-		)
-		err = conn.SetDeadline(time.Now().Add(connTimeout))
+		// logger.Info(
+		// 	"new connection",
+		// 	slog.String("remote",
+		// 		conn.RemoteAddr().String()),
+		// )
+		err := conn.SetDeadline(time.Now().Add(connTimeout))
 		if err != nil {
 			conn.Close()
 			logger.Error(
@@ -188,6 +173,11 @@ func newConn(stack *stacks.PortStack) *stacks.TCPConn {
 	})
 	if err != nil {
 		panic("TCPConn create:" + err.Error())
+	}
+
+	err = conn.OpenListenTCP(listenPort, maxconns)
+	if err != nil {
+		panic("TCPConn open:" + err.Error())
 	}
 
 	logger.Info("listening",
