@@ -60,15 +60,6 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 	var resp httpx.ResponseHeader
 	buf := bufio.NewReaderSize(nil, 1024)
 
-	const newISS = 1337
-	err := conn.OpenListenTCP(uint16(listenPort), newISS+100)
-	if err != nil {
-		logger.Error(
-			"conn open listen:",
-			slog.String("err", err.Error()),
-		)
-	}
-
 	for {
 		// conn, err := listener.Accept()
 		// if err != nil {
@@ -79,6 +70,19 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 		// 	time.Sleep(time.Second)
 		// 	continue
 		// }
+
+		const newISS = 1337
+		const newPortoffset = 1
+		
+		err := conn.OpenListenTCP(uint16(listenPort), newISS+100)
+		if err != nil {
+			logger.Error(
+				"conn open listen:",
+				slog.String("err", err.Error()),
+			)
+			time.Sleep(time.Second)
+			continue
+		}
 
 
 		logger.Info(
@@ -176,7 +180,7 @@ func newListener(stack *stacks.PortStack) *stacks.TCPListener {
 
 func newConn(stack *stacks.PortStack) *stacks.TCPConn {
 	// Start TCP server.
-	// listenAddr := netip.AddrPortFrom(stack.Addr(), listenPort)
+	listenAddr := netip.AddrPortFrom(stack.Addr(), listenPort)
 	conn, err := stacks.NewTCPConn(stack, stacks.TCPConnConfig{
 		TxBufSize: maxconns,
 		RxBufSize: tcpbufsize,
@@ -203,6 +207,12 @@ func newConn(stack *stacks.PortStack) *stacks.TCPConn {
 	// logger.Info("listening",
 	// 	slog.String("addr", "http://"+listenAddr.String()),
 	// )
+
+
+
+	logger.Info("listening",
+		slog.String("addr", "http://"+listenAddr.String()),
+	)
 
 	return conn
 }
