@@ -128,7 +128,7 @@ func blinkLED(dev *cyw43439.Device, blink chan uint) {
 func setupDevice() (*stacks.PortStack, *cyw43439.Device) {
 	_, stack, dev, err := common.SetupWithDHCP(common.SetupConfig{
 		Hostname:    hostname,
-		RequestedIP: netip.AddrFrom4([4]byte{192, 168, 68, 136}),
+		RequestedIP: netip.AddrFrom4([4]byte{192, 168, 68, 136}).String(),
 		Logger:      logger,
 		TCPPorts:    1,
 	})
