@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"bufio"
 	"encoding/json"
+	"fmt"
 	"io"
 	"machine"
 	"net/netip"
@@ -65,23 +65,7 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 	incr := 100
 
 	for {
-		// conn, err := listener.Accept()
-		// if err != nil {
-		// 	logger.Error(
-		// 		"listener accept:",
-		// 		slog.String("err", err.Error()),
-		// 	)
-		// 	time.Sleep(time.Second)
-		// 	continue
-		// }
 
-		// logger.Info(
-		// 	"new connection",
-		// 	slog.String("remote",
-		// 		conn.RemoteAddr().String()),
-		// )
-		
-		
 		err := conn.OpenListenTCP(listenPort, newISS+100)
 		if err != nil {
 			logger.Error("open close:", slog.String("err", err.Error()))
@@ -143,9 +127,10 @@ func blinkLED(dev *cyw43439.Device, blink chan uint) {
 
 func setupDevice() (*stacks.PortStack, *cyw43439.Device) {
 	_, stack, dev, err := common.SetupWithDHCP(common.SetupConfig{
-		Hostname: hostname,
-		Logger:   logger,
-		TCPPorts: 1,
+		Hostname:    hostname,
+		RequestedIP: netip.AddrFrom4([4]byte{192, 168, 68, 136}),
+		Logger:      logger,
+		TCPPorts:    1,
 	})
 	if err != nil {
 		panic("setup DHCP:" + err.Error())
@@ -155,30 +140,6 @@ func setupDevice() (*stacks.PortStack, *cyw43439.Device) {
 	changeLEDState(dev, true)
 
 	return stack, dev
-}
-
-func newListener(stack *stacks.PortStack) *stacks.TCPListener {
-	// Start TCP server.
-	listenAddr := netip.AddrPortFrom(stack.Addr(), listenPort)
-	listener, err := stacks.NewTCPListener(
-		stack, stacks.TCPListenerConfig{
-			MaxConnections: maxconns,
-			ConnTxBufSize:  tcpbufsize,
-			ConnRxBufSize:  tcpbufsize,
-		})
-	if err != nil {
-		panic("listener create:" + err.Error())
-	}
-	err = listener.StartListening(listenPort)
-	if err != nil {
-		panic("listener start:" + err.Error())
-	}
-
-	logger.Info("listening",
-		slog.String("addr", "http://"+listenAddr.String()),
-	)
-
-	return listener
 }
 
 func newConn(stack *stacks.PortStack) *stacks.TCPConn {
@@ -193,7 +154,7 @@ func newConn(stack *stacks.PortStack) *stacks.TCPConn {
 	}
 
 	logger.Info("listening",
-		slog.String("addr", "http://"+listenAddr.String()+":"+fmt.Sprintf("%v",listenAddr.Port())),
+		slog.String("addr", "http://"+listenAddr.String()+":"+fmt.Sprintf("%v", listenAddr.Port())),
 	)
 
 	return conn
@@ -213,7 +174,7 @@ func HTTPHandler(respWriter io.Writer, resp *httpx.ResponseHeader) {
 	logger.Info("Got temperature request...")
 	t := getTemperature()
 
-	logger.Info(fmt.Sprintf("%v",t))
+	logger.Info(fmt.Sprintf("%v", t))
 
 	body, err := json.Marshal(t)
 	if err != nil {

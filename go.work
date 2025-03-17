@@ -1,11 +1,11 @@
 go 1.23.6
 
 use (
-	./camwatcher
-	./garagedoor/final
-	./garagedoor/magnetic
-	./lightweather
-	./restapi
+	// ./camwatcher
+	// ./garagedoor/final
+	// ./garagedoor/magnetic
+	// ./lightweather
+	// ./restapi
 	./tempmonitor/picotempexport
 	./tempmonitor/picoserver
 	./tempmonitor/examples
