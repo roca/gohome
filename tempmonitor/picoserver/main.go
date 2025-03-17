@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"bufio"
 	"encoding/json"
 	"io"
@@ -60,6 +61,9 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 	var resp httpx.ResponseHeader
 	buf := bufio.NewReaderSize(nil, 1024)
 
+	const newISS = 1337
+	incr := 100
+
 	for {
 		// conn, err := listener.Accept()
 		// if err != nil {
@@ -76,7 +80,17 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 		// 	slog.String("remote",
 		// 		conn.RemoteAddr().String()),
 		// )
-		err := conn.SetDeadline(time.Now().Add(connTimeout))
+		
+		
+		err := conn.OpenListenTCP(listenPort, newISS+100)
+		if err != nil {
+			logger.Error("open close:", slog.String("err", err.Error()))
+			incr++
+			continue
+		}
+		logger.Info("Port opened")
+
+		err = conn.SetDeadline(time.Now().Add(connTimeout))
 		if err != nil {
 			conn.Close()
 			logger.Error(
@@ -85,13 +99,16 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 			)
 			continue
 		}
+
 		buf.Reset(conn)
 		resp.Reset()
 		HTTPHandler(conn, &resp)
+
 		err = conn.Close()
 		if err != nil {
 			logger.Error("conn close:", slog.String("err", err.Error()))
 		}
+
 		time.Sleep(1000 * time.Millisecond)
 
 		blink <- 5
@@ -168,20 +185,15 @@ func newConn(stack *stacks.PortStack) *stacks.TCPConn {
 	// Start TCP server.
 	listenAddr := netip.AddrPortFrom(stack.Addr(), listenPort)
 	conn, err := stacks.NewTCPConn(stack, stacks.TCPConnConfig{
-		TxBufSize: maxconns,
+		TxBufSize: tcpbufsize,
 		RxBufSize: tcpbufsize,
 	})
 	if err != nil {
 		panic("TCPConn create:" + err.Error())
 	}
 
-	err = conn.OpenListenTCP(listenPort, maxconns)
-	if err != nil {
-		panic("TCPConn open:" + err.Error())
-	}
-
 	logger.Info("listening",
-		slog.String("addr", "http://"+listenAddr.String()),
+		slog.String("addr", "http://"+listenAddr.String()+":"+fmt.Sprintf("%v",listenAddr.Port())),
 	)
 
 	return conn
@@ -201,6 +213,8 @@ func HTTPHandler(respWriter io.Writer, resp *httpx.ResponseHeader) {
 	logger.Info("Got temperature request...")
 	t := getTemperature()
 
+	logger.Info(fmt.Sprintf("%v",t))
+
 	body, err := json.Marshal(t)
 	if err != nil {
 		logger.Error(
@@ -212,6 +226,9 @@ func HTTPHandler(respWriter io.Writer, resp *httpx.ResponseHeader) {
 		resp.SetContentType("application/json")
 		resp.SetContentLength(len(body))
 	}
-	respWriter.Write(resp.Header())
+	_, err = respWriter.Write(resp.Header())
+	if err != nil {
+		logger.Error("Failed to write response Header:", err)
+	}
 	respWriter.Write(body)
 }
