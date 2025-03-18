@@ -62,14 +62,11 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 	buf := bufio.NewReaderSize(nil, 1024)
 
 	const newISS = 1337
-	incr := 100
 
 	err := conn.OpenListenTCP(listenPort, newISS+100)
 	if err != nil {
 		logger.Error("open close:", slog.String("err", err.Error()))
-		incr++
 		time.Sleep(3000 * time.Millisecond)
-		//continue
 	}
 	logger.Info("Port opened")
 
@@ -80,23 +77,13 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 			"conn set deadline:",
 			slog.String("err", err.Error()),
 		)
-		// continue
 	}
 
 	for {
 
-
-
-
-
 		buf.Reset(conn)
 		resp.Reset()
 		HTTPHandler(conn, &resp)
-
-		// err = conn.Close()
-		// if err != nil {
-		// 	logger.Error("conn close:", slog.String("err", err.Error()))
-		// }
 
 		time.Sleep(1000 * time.Millisecond)
 
