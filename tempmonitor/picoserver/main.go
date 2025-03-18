@@ -70,16 +70,14 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 	}
 	logger.Info("Port opened")
 
-	err = conn.SetDeadline(time.Now().Add(connTimeout))
-	if err != nil {
-		conn.Close()
-		logger.Error(
-			"conn set deadline:",
-			slog.String("err", err.Error()),
-		)
-	}
-
 	for {
+		err = conn.SetDeadline(time.Now().Add(connTimeout))
+		if err != nil {
+			logger.Error(
+				"conn set deadline:",
+				slog.String("err", err.Error()),
+			)
+		}
 
 		err := conn.FlushOutputBuffer()
 		if err != nil {
