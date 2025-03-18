@@ -81,11 +81,16 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 
 	for {
 
+		err := conn.FlushOutputBuffer()
+		if err != nil {
+			logger.Error("flush output buffer:", slog.String("err", err.Error()))
+			break
+		}
 		buf.Reset(conn)
 		resp.Reset()
 		HTTPHandler(conn, &resp)
 
-		time.Sleep(1000 * time.Millisecond)
+		time.Sleep(3000 * time.Millisecond)
 
 		blink <- 5
 	}
