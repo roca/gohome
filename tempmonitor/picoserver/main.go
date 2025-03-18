@@ -64,34 +64,39 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 	const newISS = 1337
 	incr := 100
 
+	err := conn.OpenListenTCP(listenPort, newISS+100)
+	if err != nil {
+		logger.Error("open close:", slog.String("err", err.Error()))
+		incr++
+		time.Sleep(3000 * time.Millisecond)
+		//continue
+	}
+	logger.Info("Port opened")
+
+	err = conn.SetDeadline(time.Now().Add(connTimeout))
+	if err != nil {
+		conn.Close()
+		logger.Error(
+			"conn set deadline:",
+			slog.String("err", err.Error()),
+		)
+		// continue
+	}
+
 	for {
 
-		err := conn.OpenListenTCP(listenPort, newISS+100)
-		if err != nil {
-			logger.Error("open close:", slog.String("err", err.Error()))
-			incr++
-			continue
-		}
-		logger.Info("Port opened")
 
-		err = conn.SetDeadline(time.Now().Add(connTimeout))
-		if err != nil {
-			conn.Close()
-			logger.Error(
-				"conn set deadline:",
-				slog.String("err", err.Error()),
-			)
-			continue
-		}
+
+
 
 		buf.Reset(conn)
 		resp.Reset()
 		HTTPHandler(conn, &resp)
 
-		err = conn.Close()
-		if err != nil {
-			logger.Error("conn close:", slog.String("err", err.Error()))
-		}
+		// err = conn.Close()
+		// if err != nil {
+		// 	logger.Error("conn close:", slog.String("err", err.Error()))
+		// }
 
 		time.Sleep(1000 * time.Millisecond)
 
@@ -128,7 +133,7 @@ func blinkLED(dev *cyw43439.Device, blink chan uint) {
 func setupDevice() (*stacks.PortStack, *cyw43439.Device) {
 	_, stack, dev, err := common.SetupWithDHCP(common.SetupConfig{
 		Hostname:    hostname,
-		RequestedIP: netip.AddrFrom4([4]byte{192, 168, 68, 136}).String(),
+		RequestedIP: "192.168.68.136",
 		Logger:      logger,
 		TCPPorts:    1,
 	})
