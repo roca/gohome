@@ -66,11 +66,11 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 	for {
 		err := conn.OpenListenTCP(listenPort, newISS+100)
 		if err != nil {
-			//logger.Error("open close:", slog.String("err", err.Error()))
-			time.Sleep(1000 * time.Millisecond)
+			logger.Error("open close:", slog.String("err", err.Error()))
+			time.Sleep(connTimeout * time.Millisecond)
 			continue
 		}
-		logger.Info("Port opened")
+		logger.Info("new connection", slog.String("remote", conn.RemoteAddr().String()))
 
 		err = conn.SetDeadline(time.Now().Add(connTimeout))
 		if err != nil {
@@ -89,7 +89,13 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 		resp.Reset()
 		HTTPHandler(conn, &resp)
 
-		time.Sleep(1000 * time.Millisecond)
+		time.Sleep(connTimeout * time.Millisecond)
+
+		err = conn.Close()
+		if err != nil {
+			logger.Error("conn close:", slog.String("err", err.Error()))
+		}
+
 
 		blink <- 5
 	}
