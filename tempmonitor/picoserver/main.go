@@ -96,7 +96,6 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 			logger.Error("conn close:", slog.String("err", err.Error()))
 		}
 
-
 		blink <- 5
 	}
 }
