@@ -63,14 +63,15 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 
 	const newISS = 1337
 
-	err := conn.OpenListenTCP(listenPort, newISS+100)
-	if err != nil {
-		logger.Error("open close:", slog.String("err", err.Error()))
-		time.Sleep(3000 * time.Millisecond)
-	}
-	logger.Info("Port opened")
-
 	for {
+		err := conn.OpenListenTCP(listenPort, newISS+100)
+		if err != nil {
+			logger.Error("open close:", slog.String("err", err.Error()))
+			time.Sleep(1000 * time.Millisecond)
+			continue
+		}
+		logger.Info("Port opened")
+
 		err = conn.SetDeadline(time.Now().Add(connTimeout))
 		if err != nil {
 			logger.Error(
@@ -79,7 +80,7 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 			)
 		}
 
-		err := conn.FlushOutputBuffer()
+		err = conn.FlushOutputBuffer()
 		if err != nil {
 			logger.Error("flush output buffer:", slog.String("err", err.Error()))
 			break
@@ -88,7 +89,7 @@ func handleConnection(conn *stacks.TCPConn, blink chan uint) {
 		resp.Reset()
 		HTTPHandler(conn, &resp)
 
-		time.Sleep(3000 * time.Millisecond)
+		time.Sleep(1000 * time.Millisecond)
 
 		blink <- 5
 	}
@@ -165,7 +166,7 @@ func getTemperature() *temp {
 }
 
 func HTTPHandler(respWriter io.Writer, resp *httpx.ResponseHeader) {
-	resp.SetConnectionClose()
+	defer resp.SetConnectionClose()
 	logger.Info("Got temperature request...")
 	t := getTemperature()
 
