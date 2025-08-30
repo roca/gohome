@@ -21,10 +21,14 @@ func getdate(write http.ResponseWriter, _ *http.Request) {
 	result := cmdresult{}
 
 	out, err := exec.Command("date").Output()
-	if err == nil {
-		result.Success = true
-		result.Message = "The date is " + string(out)
+	if err != nil {
+		write.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintln(write, "500 - Internal Server Error")
+		return
+
 	}
+	result.Success = true
+	result.Message = "The date is " + string(out)
 
 	json.NewEncoder(write).Encode(result)
 }
@@ -32,7 +36,7 @@ func getdate(write http.ResponseWriter, _ *http.Request) {
 func main() {
 	http.HandleFunc("/", homepage)
 	http.HandleFunc("/api/v1/getdate", getdate)
-	err := http.ListenAndServe(":4000", nil)
+	err := http.ListenAndServe(":4001", nil)
 	if err != nil {
 		fmt.Println("Failed to start the server:", err)
 		os.Exit(1)
