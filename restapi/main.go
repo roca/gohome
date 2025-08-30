@@ -36,7 +36,7 @@ func getdate(write http.ResponseWriter, _ *http.Request) {
 func main() {
 	http.HandleFunc("/", homepage)
 	http.HandleFunc("/api/v1/getdate", getdate)
-	err := http.ListenAndServe(":4001", nil)
+	err := http.ListenAndServe(":4000", nil)
 	if err != nil {
 		fmt.Println("Failed to start the server:", err)
 		os.Exit(1)
