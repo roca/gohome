@@ -1,4 +1,4 @@
-package main
+package mai
 
 import (
 	"bufio"
@@ -13,6 +13,7 @@ import (
 
 	"github.com/soypat/cyw43439"
 	"github.com/soypat/cyw43439/examples/common"
+	"github.com/soypat/cyw43439/examples/cywnet"
 
 	"github.com/soypat/seqs/httpx"
 	"github.com/soypat/seqs/stacks"
@@ -127,6 +128,12 @@ func blinkLED(dev *cyw43439.Device, blink chan uint) {
 }
 
 func setupDevice() (*stacks.PortStack, *cyw43439.Device) {
+	cfgDev := cyw43439.Config{}
+	cfg := cywnet.StackConfig{}
+
+	stackNew, err := cywnet.NewConfiguredPicoWithStack("ssid", "password", cfgDev, cfg)
+	_ = stackNew
+
 	_, stack, dev, err := common.SetupWithDHCP(common.SetupConfig{
 		Hostname:    hostname,
 		RequestedIP: "192.168.68.136",

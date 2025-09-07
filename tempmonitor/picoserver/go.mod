@@ -1,15 +1,15 @@
 module picoserver
 
-go 1.23.6
+go 1.25.0
 
 require (
-	github.com/soypat/cyw43439 v0.0.0-20240321235513-d28d7f302509
-	github.com/soypat/seqs v0.0.0-20240527012110-1201bab640ef
+	github.com/soypat/cyw43439 v0.0.0-20250505012923-830110c8f4af
+	github.com/soypat/seqs v0.0.0-20250630134107-01c3f05666ba
 )
 
 require (
-	github.com/tinygo-org/pio v0.0.0-20231216154340-cd888eb58899 // indirect
-	golang.org/x/exp v0.0.0-20230728194245-b0cb94b80691 // indirect
+	github.com/tinygo-org/pio v0.2.0 // indirect
+	golang.org/x/exp v0.0.0-20240808152545-0cdaa3abc0fa // indirect
 )
 
 replace github.com/soypat/cyw43439 => ../cyw43439
