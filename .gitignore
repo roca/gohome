@@ -1,4 +1,6 @@
 tempmonitor/cyw43439
+tempmonitor/cyw43439_backup
+tempmonitor/cyw43439_main
 src
 tinygotempmonitor/picoserver/main.uf2
 tempmonitor/picoserver/flash_nuke.uf2
