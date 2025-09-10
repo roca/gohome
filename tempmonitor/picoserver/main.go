@@ -12,6 +12,7 @@ import (
 
 	"github.com/soypat/cyw43439"
 	"github.com/soypat/cyw43439/examples/common"
+	"github.com/soypat/cyw43439/examples/common/cywnet"
 
 	"github.com/soypat/seqs/httpx"
 	"github.com/soypat/seqs/stacks"
@@ -125,6 +126,13 @@ func blinkLED(dev *cyw43439.Device, blink chan uint) {
 }
 
 func setupDevice() (*stacks.PortStack, *cyw43439.Device) {
+
+	cfgDev := cyw43439.Config{}
+	cfg := cywnet.StackConfig{}
+
+	stackTest, _ := cywnet.NewConfiguredPicoWithStack("ssid", "password", cfgDev, cfg)
+	_ = stackTest
+
 	_, stack, dev, err := common.SetupWithDHCP(common.SetupConfig{
 		Hostname: hostname,
 		Logger:   logger,
